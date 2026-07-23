@@ -1,0 +1,52 @@
+name: Compilar APK Android
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obtener repositorio
+        uses: actions/checkout@v4
+
+      - name: Descargar y descomprimir juego desde Pixeldrain
+        run: |
+          curl -L -o stivenengine.zip "https://pixeldrain.com/api/file/cX7e7QuG"
+          unzip -o stivenengine.zip -d .
+          rm stivenengine.zip
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Configurar Haxe
+        uses: kxck/setup-haxe@v1.2.0
+        with:
+          haxe-version: 4.2.5
+
+      - name: Instalar Android NDK
+        uses: nsetup/setup-android-ndk@v1
+        with:
+          ndk-version: r21e
+
+      - name: Instalar librerías del proyecto
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install lime 8.0.1
+          haxelib install openfl 9.3.3
+          haxelib install flixel 5.5.0
+          haxelib run lime setup
+
+      - name: Compilar APK
+        run: |
+          haxelib run lime build android -final
+
+      - name: Subir el APK como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mod-P-Slice-Android
+          path: export/release/android/bin/app/build/outputs/apk/release/*.apk
