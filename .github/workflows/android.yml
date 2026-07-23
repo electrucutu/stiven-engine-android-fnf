@@ -54,8 +54,8 @@ jobs:
           haxelib install hscript --quiet
           haxelib install hxcpp --quiet
           haxelib install actuate --quiet
+          haxelib install extension-haptics --quiet || haxelib git extension-haptics https://github.com/crowplexus/extension-haptics
           haxelib git extension-androidtools https://github.com/MA-Teo/extension-androidtools --quiet || true
-          haxelib git extension-haptics https://github.com/crowplexus/extension-haptics --quiet || true
           haxelib git hxCodec https://github.com/polybiusproxy/hxCodec --quiet || true
           haxelib git linc_luajit https://github.com/nebulastream/linc_luajit --quiet || true
 
