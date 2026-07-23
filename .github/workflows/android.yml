@@ -13,7 +13,7 @@ jobs:
 
       - name: Descargar y descomprimir juego desde Pixeldrain
         run: |
-          curl -sSL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" -o stivenengine.zip "https://pixeldrain.com/api/file/cX7e7QuG"
+          curl -L --retry 3 -o stivenengine.zip "https://pixeldrain.com/api/file/cX7e7QuG"
           unzip -o stivenengine.zip -d temp_extract
           rm stivenengine.zip
           
