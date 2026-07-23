@@ -11,22 +11,12 @@ jobs:
       - name: Obtener repositorio
         uses: actions/checkout@v4
 
-      - name: Descargar y descomprimir juego desde Pixeldrain
+      - name: Descargar y descomprimir juego
         run: |
-          # Intentar descargar con wget usando User-Agent real
-          wget --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" -O stivenengine.zip "https://pixeldrain.com/api/file/cX7e7QuG?download"
-
-          # Verificar si el archivo es un ZIP real y no un texto de error
-          if file stivenengine.zip | grep -qE 'Zip archive|compressed'; then
-            echo "¡ZIP descargado con éxito! Descomprimiendo..."
-            unzip -o stivenengine.zip -d temp_extract
-            rm stivenengine.zip
-          else
-            echo "Pixeldrain bloqueó la descarga. Contenido recibido:"
-            cat stivenengine.zip
-            exit 1
-          fi
-
+          curl -L -o stivenengine.zip "https://litter.catbox.moe/s7iobo2r01letsta.zip"
+          unzip -o stivenengine.zip -d temp_extract
+          rm stivenengine.zip
+          
           # Buscar el archivo de proyecto de FNF y mover todo a la raíz
           PROJECT_FILE=$(find temp_extract -iname "project.xml" | head -n 1)
           if [ -n "$PROJECT_FILE" ]; then
