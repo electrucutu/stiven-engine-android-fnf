@@ -1,4 +1,4 @@
-name: Compilar APK Android
+name: Stiven Engine - Compilar APK Android
 
 on:
   workflow_dispatch:
@@ -71,5 +71,5 @@ jobs:
       - name: Subir el APK como artefacto
         uses: actions/upload-artifact@v4
         with:
-          name: Mod-P-Slice-Android
+          name: Stiven-Engine-Android
           path: export/release/android/bin/app/build/outputs/apk/release/*.apk
