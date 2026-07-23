@@ -24,12 +24,12 @@ jobs:
           java-version: '17'
 
       - name: Configurar Haxe
-        uses: kxck/setup-haxe@v1.2.0
+        uses: haxe-action/setup-haxe@v1
         with:
           haxe-version: 4.2.5
 
       - name: Instalar Android NDK
-        uses: nsetup/setup-android-ndk@v1
+        uses: ndk-actions/setup-ndk@v3
         with:
           ndk-version: r21e
 
