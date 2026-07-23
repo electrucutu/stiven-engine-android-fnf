@@ -14,8 +14,16 @@ jobs:
       - name: Descargar y descomprimir juego desde Pixeldrain
         run: |
           curl -L -o stivenengine.zip "https://pixeldrain.com/api/file/cX7e7QuG"
-          unzip -o stivenengine.zip -d .
+          unzip -o stivenengine.zip -d temp_extract
           rm stivenengine.zip
+          
+          # Buscar la carpeta que contiene el archivo Project.xml y mover todo a la raíz
+          PROJECT_DIR=$(dirname $(find temp_extract -maxdepth 3 -iname "Project.xml" | head -n 1))
+          if [ -n "$PROJECT_DIR" ]; then
+            echo "Archivos encontrados en $PROJECT_DIR, moviendo a la raíz..."
+            cp -rn $PROJECT_DIR/* . 2>/dev/null || true
+          fi
+          rm -rf temp_extract
 
       - name: Configurar Java
         uses: actions/setup-java@v4
@@ -33,12 +41,19 @@ jobs:
         with:
           ndk-version: r21e
 
-      - name: Instalar librerías de Haxe y configurar Lime
+      - name: Instalar librerías de Haxe y FNF
         run: |
           haxelib setup ~/haxelib
           haxelib install lime 8.0.1 --quiet
           haxelib install openfl 9.3.3 --quiet
           haxelib install flixel 5.5.0 --quiet
+          haxelib install flixel-addons --quiet
+          haxelib install flixel-ui --quiet
+          haxelib install hscript --quiet
+          haxelib install hxcpp --quiet
+          haxelib git extension-androidtools https://github.com/MA-Teo/extension-androidtools --quiet || true
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec --quiet || true
+
           haxelib run lime setup
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
